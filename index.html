@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário de Visitas — Órion Brooklin 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); font-family: sans-serif; padding: 16px; color: white; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo-box { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border-radius: 16px; padding: 12px 28px; margin-bottom: 10px; }
+    .logo-box .star { font-size: 48px; }
+    .logo-box .title { font-weight: 900; font-size: 22px; letter-spacing: 1px; }
+    .logo-box .subtitle { color: #f59e0b; font-weight: 700; font-size: 18px; letter-spacing: 2px; }
+    .sub { color: rgba(255,255,255,0.7); font-size: 14px; }
+    .modes { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .mode-btn { padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; font-weight: 700; font-size: 13px; background: rgba(255,255,255,0.12); color: white; transition: all 0.2s; }
+    .mode-btn.active { background: #f59e0b; color: #1e3a5f; }
+    .inputs { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+    .inputs input, .inputs select { padding: 8px 14px; border-radius: 20px; border: none; font-size: 14px; outline: none; min-width: 180px; }
+    .btn-green { padding: 8px 18px; border-radius: 20px; border: none; background: #22c55e; color: white; font-weight: 700; cursor: pointer; font-size: 13px; }
+    .msg { text-align: center; background: rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 16px; margin-bottom: 12px; font-size: 13px; font-weight: 600; }
+    .month-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .nav-btn { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 20px; padding: 6px 16px; cursor: pointer; font-size: 16px; font-weight: 700; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .month-label { font-weight: 800; font-size: 18px; min-width: 150px; text-align: center; }
+    .cal-wrap { max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.06); border-radius: 16px; padding: 12px; }
+    .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+    .wd { text-align: center; color: #f59e0b; font-weight: 700; font-size: 12px; padding: 4px 0; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .day { background: white; border: 1px solid #e5e7eb; border-radius: 8px; min-height: 64px; padding: 4px 6px; cursor: default; position: relative; overflow: hidden; }
+    .day.clickable { cursor: pointer; }
+    .day.avail { background: #22c55e; border: 2px solid #16a34a; }
+    .day.booked { background: #3b82f6; border: 2px solid #2563eb; }
+    .day.avail-view { background: #f0fdf4; }
+    .day.booked-view { background: #dbeafe; }
+    .day-num { font-weight: 700; font-size: 13px; color: #374151; }
+    .day.avail .day-num, .day.booked .day-num { color: white; }
+    .tag { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 1px 4px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: white; }
+    .tag.green { background: #15803d; }
+    .tag.blue { background: #1d4ed8; }
+    .legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); }
+    .legend-dot { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); }
+    .loading { text-align: center; padding: 40px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-box">
+    <div class="star">⭐</div>
+    <div class="title">CLUBE DESBRAVADORES</div>
+    <div class="subtitle">ÓRION — BROOKLIN</div>
+  </div>
+  <div class="sub">Calendário de Visitas 2026</div>
+</div>
+
+<div class="modes">
+  <button class="mode-btn active" onclick="setMode('view')">👁 Visualizar</button>
+  <button class="mode-btn" onclick="setMode('counselor')">🧭 Sou Conselheiro</button>
+  <button class="mode-btn" onclick="setMode('parent')">👨‍👧 Sou Pai/Responsável</button>
+</div>
+
+<div id="inputs-counselor" class="inputs" style="display:none">
+  <input id="counselor-input" placeholder="Seu nome (conselheiro)" />
+  <button class="btn-green" onclick="enterCounselor()">Entrar</button>
+  <span id="counselor-label" style="color:#22c55e;font-weight:700;font-size:13px"></span>
+</div>
+
+<div id="inputs-parent" class="inputs" style="display:none">
+  <select id="counselor-select"><option value="">Escolha o conselheiro</option></select>
+  <input id="pathfinder-input" placeholder="Nome do desbravador" />
+  <span style="color:rgba(255,255,255,0.6);font-size:12px">Clique em um dia verde para agendar</span>
+</div>
+
+<div id="msg" class="msg" style="display:none"></div>
+
+<div class="month-nav">
+  <button class="nav-btn" id="prev-btn" onclick="changeMonth(-1)">‹</button>
+  <span class="month-label" id="month-label"></span>
+  <button class="nav-btn" id="next-btn" onclick="changeMonth(1)">›</button>
+</div>
+
+<div class="cal-wrap">
+  <div class="weekdays">
+    <div class="wd">Dom</div><div class="wd">Seg</div><div class="wd">Ter</div>
+    <div class="wd">Qua</div><div class="wd">Qui</div><div class="wd">Sex</div><div class="wd">Sáb</div>
+  </div>
+  <div class="days" id="days-grid"><div class="loading">Carregando...</div></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Disponível</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Agendado</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4"></div> Disponível (visão geral)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#dbeafe"></div> Agendado (visão geral)</div>
+</div>
+
+<script>
+  const API_KEY = "$2a$10$/upzFa4czhAQl8ApuyQItuyc3I0Gz6gfzYZ.Qvr9Ehz3HW0gf.7DG";
+  const BIN_NAME = "orion-brooklin-2026";
+  const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+  let mode = "view";
+  let month = new Date().getMonth();
+  let counselorName = "";
+  let data = {};
+  let binId = null;
+
+  async function initBin() {
+    // Try to find existing bin
+    try {
+      const r = await fetch("https://api.jsonbin.io/v3/b?collectionName=" + BIN_NAME, {
+        headers: { "X-Master-Key": API_KEY }
+      });
+      const json = await r.json();
+      if (json && json.length > 0) {
+        binId = json[0].id;
+        const r2 = await fetch("https://api.jsonbin.io/v3/b/" + binId + "/latest", {
+          headers: { "X-Master-Key": API_KEY }
+        });
+        const d = await r2.json();
+        data = d.record || {};
+      } else {
+        // Create new bin
+        const r2 = await fetch("https://api.jsonbin.io/v3/b", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY, "X-Bin-Name": BIN_NAME, "X-Bin-Private": "false" },
+          body: JSON.stringify({})
+        });
+        const d = await r2.json();
+        binId = d.metadata.id;
+        data = {};
+      }
+    } catch(e) {
+      console.error(e);
+    }
+    render();
+  }
+
+  async function saveData() {
+    if (!binId) return;
+    await fetch("https://api.jsonbin.io/v3/b/" + binId, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+      body: JSON.stringify(data)
+    });
+  }
+
+  function dateKey(m, d) { return `2026-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
+  function getDaysInMonth(m) { return new Date(2026, m+1, 0).getDate(); }
+  function getFirstDay(m) { return new Date(2026, m, 1).getDay(); }
+
+  function allCounselors() {
+    const s = new Set();
+    Object.values(data).forEach(v => {
+      (v.available||[]).forEach(c => s.add(c));
+      Object.keys(v.booked||{}).forEach(c => s.add(c));
+    });
+    if (counselorName) s.add(counselorName);
+    return [...s].sort();
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.querySelectorAll(".mode-btn").forEach((b,i) => b.classList.toggle("active", ["view","counselor","parent"][i]===m));
+    document.getElementById("inputs-counselor").style.display = m==="counselor" ? "flex" : "none";
+    document.getElementById("inputs-parent").style.display = m==="parent" ? "flex" : "none";
+    if (m==="parent") populateCounselorSelect();
+    render();
+  }
+
+  function populateCounselorSelect() {
+    const sel = document.getElementById("counselor-select");
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">Escolha o conselheiro</option>';
+    allCounselors().forEach(c => { const o = document.createElement("option"); o.value=c; o.textContent=c; sel.appendChild(o); });
+    sel.value = cur;
+  }
+
+  function enterCounselor() {
+    const v = document.getElementById("counselor-input").value.trim();
+    if (!v) return;
+    counselorName = v;
+    document.getElementById("counselor-label").textContent = "✓ " + v;
+    showMsg(`Olá, ${v}! Clique nos dias para marcar sua disponibilidade.`);
+    render();
+  }
+
+  function showMsg(m, dur=3000) {
+    const el = document.getElementById("msg");
+    el.textContent = m; el.style.display = "block";
+    setTimeout(() => el.style.display = "none", dur);
+  }
+
+  function changeMonth(d) {
+    month = Math.max(0, Math.min(11, month + d));
+    render();
+  }
+
+  async function toggleAvailability(d) {
+    if (!counselorName) return;
+    const k = dateKey(month, d);
+    if (!data[k]) data[k] = { available: [], booked: {} };
+    const avail = data[k].available;
+    const idx = avail.indexOf(counselorName);
+    if (idx >= 0) { avail.splice(idx, 1); delete data[k].booked[counselorName]; }
+    else avail.push(counselorName);
+    render();
+    await saveData();
+  }
+
+  async function bookDate(d) {
+    const pf = document.getElementById("pathfinder-input").value.trim();
+    const cs = document.getElementById("counselor-select").value;
+    if (!pf || !cs) return;
+    const k = dateKey(month, d);
+    if (!(data[k]?.available||[]).includes(cs)) { showMsg("Data não disponível para este conselheiro."); return; }
+    if (data[k]?.booked?.[cs]) { showMsg("Já há um desbravador agendado nesta data."); return; }
+    if (!data[k].booked) data[k].booked = {};
+    data[k].booked[cs] = pf;
+    showMsg(`✅ ${pf} agendado em ${d}/${month+1}/2026!`);
+    document.getElementById("pathfinder-input").value = "";
+    render();
+    await saveData();
+  }
+
+  function render() {
+    // Month nav
+    document.getElementById("month-label").textContent = MONTHS[month] + " 2026";
+    document.getElementById("prev-btn").disabled = month === 0;
+    document.getElementById("next-btn").disabled = month === 11;
+
+    const grid = document.getElementById("days-grid");
+    grid.innerHTML = "";
+    const first = getFirstDay(month);
+    const total = getDaysInMonth(month);
+    const cs = document.getElementById("counselor-select")?.value || "";
+
+    for (let i = 0; i < first; i++) { const e = document.createElement("div"); grid.appendChild(e); }
+
+    for (let d = 1; d <= total; d++) {
+      const k = dateKey(month, d);
+      const entry = data[k] || { available: [], booked: {} };
+      const avail = entry.available || [];
+      const booked = entry.booked || {};
+      const div = document.createElement("div");
+      div.className = "day";
+
+      let clickable = false;
+      if (mode === "counselor" && counselorName) {
+        const isMine = avail.includes(counselorName);
+        const myBook = booked[counselorName];
+        if (myBook) div.classList.add("booked");
+        else if (isMine) div.classList.add("avail");
+        clickable = true;
+      } else if (mode === "parent" && cs) {
+        const isAvail = avail.includes(cs);
+        const myBook = booked[cs];
+        if (myBook) div.classList.add("booked");
+        else if (isAvail) { div.style.background="#bbf7d0"; div.style.border="2px solid #22c55e"; clickable = true; }
+      } else {
+        if (Object.keys(booked).length > 0) div.classList.add("booked-view");
+        else if (avail.length > 0) div.classList.add("avail-view");
+      }
+
+      if (clickable) div.classList.add("clickable");
+
+      const num = document.createElement("div");
+      num.className = "day-num"; num.textContent = d; div.appendChild(num);
+
+      // Tags
+      if (mode === "view") {
+        Object.values(booked).forEach(n => { const t = document.createElement("div"); t.className="tag blue"; t.textContent=n; div.appendChild(t); });
+        const unbooked = avail.filter(c => !booked[c]);
+        if (unbooked.length) { const t = document.createElement("div"); t.className="tag green"; t.textContent=`${unbooked.length} disponível${unbooked.length>1?"is":""}`; div.appendChild(t); }
+      } else if (mode === "counselor" && counselorName) {
+        const myBook = booked[counselorName];
+        if (myBook) { const t = document.createElement("div"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t); }
+      } else if (mode === "parent" && cs) {
+        const myBook = booked[cs];
+        if (myBook) { const t = document.createElement("div"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t); }
+      }
+
+      const dd = d;
+      div.onclick = () => {
+        if (mode === "counselor" && counselorName) toggleAvailability(dd);
+        else if (mode === "parent" && cs && clickable) bookDate(dd);
+      };
+
+      grid.appendChild(div);
+    }
+
+    if (mode === "parent") populateCounselorSelect();
+  }
+
+  initBin();
+</script>
+</body>
+</html>
