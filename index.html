@@ -18,8 +18,12 @@
     .mode-btn.active { background: #f59e0b; color: #1e3a5f; }
     .inputs { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
     .inputs input, .inputs select { padding: 8px 14px; border-radius: 20px; border: none; font-size: 14px; outline: none; min-width: 180px; }
-    .btn-green { padding: 8px 18px; border-radius: 20px; border: none; background: #22c55e; color: white; font-weight: 700; cursor: pointer; font-size: 13px; }
-    .msg { text-align: center; background: rgba(255,255,255,0.12); border-radius: 10px; padding: 8px 16px; margin-bottom: 12px; font-size: 13px; font-weight: 600; }
+    .btn { padding: 8px 18px; border-radius: 20px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; }
+    .btn-green { background: #22c55e; color: white; }
+    .btn-red { background: #ef4444; color: white; font-size: 11px; padding: 3px 8px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; margin-top: 3px; }
+    .msg { text-align: center; border-radius: 10px; padding: 8px 16px; margin-bottom: 12px; font-size: 13px; font-weight: 600; }
+    .msg.ok { background: rgba(34,197,94,0.2); }
+    .msg.err { background: rgba(239,68,68,0.2); }
     .month-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; }
     .nav-btn { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 20px; padding: 6px 16px; cursor: pointer; font-size: 16px; font-weight: 700; }
     .nav-btn:disabled { opacity: 0.3; cursor: default; }
@@ -28,21 +32,25 @@
     .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
     .wd { text-align: center; color: #f59e0b; font-weight: 700; font-size: 12px; padding: 4px 0; }
     .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .day { background: white; border: 1px solid #e5e7eb; border-radius: 8px; min-height: 64px; padding: 4px 6px; cursor: default; position: relative; overflow: hidden; }
+    .day { background: white; border: 1px solid #e5e7eb; border-radius: 8px; min-height: 70px; padding: 4px 6px; cursor: default; position: relative; overflow: hidden; transition: transform 0.1s; }
+    .day.clickable:hover { transform: scale(1.03); }
     .day.clickable { cursor: pointer; }
     .day.avail { background: #22c55e; border: 2px solid #16a34a; }
     .day.booked { background: #3b82f6; border: 2px solid #2563eb; }
-    .day.avail-view { background: #f0fdf4; }
-    .day.booked-view { background: #dbeafe; }
+    .day.avail-view { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .day.booked-view { background: #dbeafe; border: 1px solid #93c5fd; }
+    .day.parent-avail { background: #bbf7d0; border: 2px solid #22c55e; }
     .day-num { font-weight: 700; font-size: 13px; color: #374151; }
     .day.avail .day-num, .day.booked .day-num { color: white; }
-    .tag { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 1px 4px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: white; }
+    .tag { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 1px 4px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: white; display: block; }
     .tag.green { background: #15803d; }
     .tag.blue { background: #1d4ed8; }
+    .tag.gray { background: #6b7280; color: white; }
     .legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
     .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); }
     .legend-dot { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); }
-    .loading { text-align: center; padding: 40px; }
+    .loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.6); }
+    .syncing { position: fixed; bottom: 16px; right: 16px; background: rgba(0,0,0,0.7); color: white; padding: 8px 14px; border-radius: 20px; font-size: 12px; display: none; }
   </style>
 </head>
 <body>
@@ -63,14 +71,14 @@
 </div>
 
 <div id="inputs-counselor" class="inputs" style="display:none">
-  <input id="counselor-input" placeholder="Seu nome (conselheiro)" />
-  <button class="btn-green" onclick="enterCounselor()">Entrar</button>
+  <input id="counselor-input" placeholder="Seu nome (conselheiro)" onkeydown="if(event.key==='Enter')enterCounselor()" />
+  <button class="btn btn-green" onclick="enterCounselor()">Entrar</button>
   <span id="counselor-label" style="color:#22c55e;font-weight:700;font-size:13px"></span>
 </div>
 
 <div id="inputs-parent" class="inputs" style="display:none">
   <select id="counselor-select"><option value="">Escolha o conselheiro</option></select>
-  <input id="pathfinder-input" placeholder="Nome do desbravador" />
+  <input id="pathfinder-input" placeholder="Nome do desbravador" onkeydown="if(event.key==='Enter')bookSelected()" />
   <span style="color:rgba(255,255,255,0.6);font-size:12px">Clique em um dia verde para agendar</span>
 </div>
 
@@ -87,42 +95,45 @@
     <div class="wd">Dom</div><div class="wd">Seg</div><div class="wd">Ter</div>
     <div class="wd">Qua</div><div class="wd">Qui</div><div class="wd">Sex</div><div class="wd">Sáb</div>
   </div>
-  <div class="days" id="days-grid"><div class="loading">Carregando...</div></div>
+  <div class="days" id="days-grid"><div class="loading">🔄 Conectando ao banco de dados...</div></div>
 </div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Disponível</div>
   <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Agendado</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4"></div> Disponível (visão geral)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#dbeafe"></div> Agendado (visão geral)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4;border-color:#bbf7d0"></div> Disponível (geral)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#dbeafe;border-color:#93c5fd"></div> Agendado (geral)</div>
 </div>
 
-<script>
-  const NPOINT_ID = "0f7db49d34dd066a29bd";
+<div class="syncing" id="syncing">💾 Salvando...</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCMDG0jtTPYIEPJpYn3_Hd-nmKxRvWzS2Q",
+    authDomain: "orion-brooklin.firebaseapp.com",
+    databaseURL: "https://orion-brooklin-default-rtdb.firebaseio.com",
+    projectId: "orion-brooklin",
+    storageBucket: "orion-brooklin.firebasestorage.app",
+    messagingSenderId: "238322280358",
+    appId: "1:238322280358:web:d49d6f8b6e5d9f8d029167"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const calRef = ref(db, "calendario2026");
+
   const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  let mode = "view", month = new Date().getMonth(), counselorName = "", data = {}, pendingBook = null;
 
-  let mode = "view";
-  let month = new Date().getMonth();
-  let counselorName = "";
-  let data = {};
-
-  async function initBin() {
-    try {
-      const r = await fetch("https://api.npoint.io/" + NPOINT_ID);
-      data = await r.json() || {};
-    } catch(e) {
-      console.error("Erro ao carregar dados:", e);
-    }
+  // Listen realtime
+  onValue(calRef, snap => {
+    data = snap.val() || {};
     render();
-  }
-
-  async function saveData() {
-    await fetch("https://api.jsonbin.io/v3/b/" + BIN_ID, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-      body: JSON.stringify(data)
-    });
-  }
+  });
 
   function dateKey(m, d) { return `2026-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
   function getDaysInMonth(m) { return new Date(2026, m+1, 0).getDate(); }
@@ -138,83 +149,109 @@
     return [...s].sort();
   }
 
-  function setMode(m) {
+  async function saveData() {
+    const el = document.getElementById("syncing");
+    el.style.display = "block";
+    await set(calRef, data);
+    el.style.display = "none";
+  }
+
+  window.setMode = m => {
     mode = m;
     document.querySelectorAll(".mode-btn").forEach((b,i) => b.classList.toggle("active", ["view","counselor","parent"][i]===m));
     document.getElementById("inputs-counselor").style.display = m==="counselor" ? "flex" : "none";
     document.getElementById("inputs-parent").style.display = m==="parent" ? "flex" : "none";
     if (m==="parent") populateCounselorSelect();
     render();
-  }
+  };
+
+  window.changeMonth = d => { month = Math.max(0, Math.min(11, month+d)); render(); };
+
+  window.enterCounselor = () => {
+    const v = document.getElementById("counselor-input").value.trim();
+    if (!v) return;
+    counselorName = v;
+    document.getElementById("counselor-label").textContent = "✓ " + v;
+    showMsg(`Olá, ${v}! Clique nos dias para marcar sua disponibilidade.`, "ok");
+    render();
+  };
+
+  window.bookSelected = () => {
+    if (pendingBook) bookDate(pendingBook);
+  };
 
   function populateCounselorSelect() {
     const sel = document.getElementById("counselor-select");
     const cur = sel.value;
     sel.innerHTML = '<option value="">Escolha o conselheiro</option>';
     allCounselors().forEach(c => { const o = document.createElement("option"); o.value=c; o.textContent=c; sel.appendChild(o); });
-    sel.value = cur;
+    if (cur) sel.value = cur;
   }
 
-  function enterCounselor() {
-    const v = document.getElementById("counselor-input").value.trim();
-    if (!v) return;
-    counselorName = v;
-    document.getElementById("counselor-label").textContent = "✓ " + v;
-    showMsg(`Olá, ${v}! Clique nos dias para marcar sua disponibilidade.`);
-    render();
-  }
-
-  function showMsg(m, dur=3000) {
+  function showMsg(m, type="ok", dur=3000) {
     const el = document.getElementById("msg");
-    el.textContent = m; el.style.display = "block";
+    el.textContent = m; el.className = "msg " + type; el.style.display = "block";
     setTimeout(() => el.style.display = "none", dur);
   }
 
-  function changeMonth(d) {
-    month = Math.max(0, Math.min(11, month + d));
-    render();
-  }
-
   async function toggleAvailability(d) {
-    if (!counselorName) return;
+    if (!counselorName) { showMsg("Por favor, informe seu nome primeiro.", "err"); return; }
     const k = dateKey(month, d);
     if (!data[k]) data[k] = { available: [], booked: {} };
-    const avail = data[k].available;
+    const avail = data[k].available || [];
     const idx = avail.indexOf(counselorName);
-    if (idx >= 0) { avail.splice(idx, 1); delete data[k].booked[counselorName]; }
-    else avail.push(counselorName);
-    render();
+    if (idx >= 0) {
+      avail.splice(idx, 1);
+      if (data[k].booked) delete data[k].booked[counselorName];
+    } else {
+      avail.push(counselorName);
+    }
+    data[k].available = avail;
     await saveData();
   }
 
   async function bookDate(d) {
     const pf = document.getElementById("pathfinder-input").value.trim();
     const cs = document.getElementById("counselor-select").value;
-    if (!pf || !cs) return;
+    if (!cs) { showMsg("Escolha um conselheiro.", "err"); return; }
+    if (!pf) { showMsg("Informe o nome do desbravador.", "err"); return; }
     const k = dateKey(month, d);
-    if (!(data[k]?.available||[]).includes(cs)) { showMsg("Data não disponível para este conselheiro."); return; }
-    if (data[k]?.booked?.[cs]) { showMsg("Já há um desbravador agendado nesta data."); return; }
+    if (!(data[k]?.available||[]).includes(cs)) { showMsg("Data não disponível para este conselheiro.", "err"); return; }
+    if (data[k]?.booked?.[cs]) { showMsg("Já há um desbravador agendado nesta data.", "err"); return; }
     if (!data[k].booked) data[k].booked = {};
     data[k].booked[cs] = pf;
-    showMsg(`✅ ${pf} agendado em ${d}/${month+1}/2026!`);
+    showMsg(`✅ ${pf} agendado em ${d}/${month+1}/2026 com ${cs}!`, "ok");
     document.getElementById("pathfinder-input").value = "";
-    render();
+    pendingBook = null;
+    await saveData();
+  }
+
+  async function cancelBooking(k, cs) {
+    if (!confirm(`Cancelar o agendamento de "${data[k].booked[cs]}" com ${cs}?`)) return;
+    delete data[k].booked[cs];
+    showMsg("Agendamento cancelado.", "ok");
+    await saveData();
+  }
+
+  async function removeAvailability(k, cs) {
+    if (!confirm(`Remover disponibilidade de ${cs} nesta data?`)) return;
+    data[k].available = (data[k].available||[]).filter(c => c !== cs);
+    if (data[k].booked) delete data[k].booked[cs];
+    showMsg("Disponibilidade removida.", "ok");
     await saveData();
   }
 
   function render() {
-    // Month nav
     document.getElementById("month-label").textContent = MONTHS[month] + " 2026";
     document.getElementById("prev-btn").disabled = month === 0;
     document.getElementById("next-btn").disabled = month === 11;
 
     const grid = document.getElementById("days-grid");
     grid.innerHTML = "";
-    const first = getFirstDay(month);
-    const total = getDaysInMonth(month);
+    const first = getFirstDay(month), total = getDaysInMonth(month);
     const cs = document.getElementById("counselor-select")?.value || "";
 
-    for (let i = 0; i < first; i++) { const e = document.createElement("div"); grid.appendChild(e); }
+    for (let i = 0; i < first; i++) grid.appendChild(document.createElement("div"));
 
     for (let d = 1; d <= total; d++) {
       const k = dateKey(month, d);
@@ -223,19 +260,20 @@
       const booked = entry.booked || {};
       const div = document.createElement("div");
       div.className = "day";
-
       let clickable = false;
+
       if (mode === "counselor" && counselorName) {
         const isMine = avail.includes(counselorName);
         const myBook = booked[counselorName];
         if (myBook) div.classList.add("booked");
         else if (isMine) div.classList.add("avail");
         clickable = true;
+        div.onclick = () => toggleAvailability(d);
       } else if (mode === "parent" && cs) {
         const isAvail = avail.includes(cs);
         const myBook = booked[cs];
         if (myBook) div.classList.add("booked");
-        else if (isAvail) { div.style.background="#bbf7d0"; div.style.border="2px solid #22c55e"; clickable = true; }
+        else if (isAvail) { div.classList.add("parent-avail"); clickable = true; div.onclick = () => { pendingBook = d; bookDate(d); }; }
       } else {
         if (Object.keys(booked).length > 0) div.classList.add("booked-view");
         else if (avail.length > 0) div.classList.add("avail-view");
@@ -246,32 +284,39 @@
       const num = document.createElement("div");
       num.className = "day-num"; num.textContent = d; div.appendChild(num);
 
-      // Tags
+      // Tags e botões de cancelar
       if (mode === "view") {
-        Object.values(booked).forEach(n => { const t = document.createElement("div"); t.className="tag blue"; t.textContent=n; div.appendChild(t); });
+        Object.entries(booked).forEach(([c, n]) => {
+          const t = document.createElement("span"); t.className="tag blue"; t.textContent=`${n} c/ ${c}`; div.appendChild(t);
+        });
         const unbooked = avail.filter(c => !booked[c]);
-        if (unbooked.length) { const t = document.createElement("div"); t.className="tag green"; t.textContent=`${unbooked.length} disponível${unbooked.length>1?"is":""}`; div.appendChild(t); }
+        if (unbooked.length) { const t = document.createElement("span"); t.className="tag green"; t.textContent=`${unbooked.length} disponível${unbooked.length>1?"is":""}`; div.appendChild(t); }
+
       } else if (mode === "counselor" && counselorName) {
         const myBook = booked[counselorName];
-        if (myBook) { const t = document.createElement("div"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t); }
+        if (myBook) {
+          const t = document.createElement("span"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t);
+          const btn = document.createElement("button"); btn.className="btn-red"; btn.textContent="❌ Cancelar";
+          btn.onclick = e => { e.stopPropagation(); cancelBooking(k, counselorName); }; div.appendChild(btn);
+        } else if (avail.includes(counselorName)) {
+          const btn = document.createElement("button"); btn.className="btn-red"; btn.textContent="🚫 Remover";
+          btn.onclick = e => { e.stopPropagation(); removeAvailability(k, counselorName); }; div.appendChild(btn);
+        }
+
       } else if (mode === "parent" && cs) {
         const myBook = booked[cs];
-        if (myBook) { const t = document.createElement("div"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t); }
+        if (myBook) {
+          const t = document.createElement("span"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t);
+          const btn = document.createElement("button"); btn.className="btn-red"; btn.textContent="❌ Cancelar";
+          btn.onclick = e => { e.stopPropagation(); cancelBooking(k, cs); }; div.appendChild(btn);
+        }
       }
-
-      const dd = d;
-      div.onclick = () => {
-        if (mode === "counselor" && counselorName) toggleAvailability(dd);
-        else if (mode === "parent" && cs && clickable) bookDate(dd);
-      };
 
       grid.appendChild(div);
     }
 
     if (mode === "parent") populateCounselorSelect();
   }
-
-  initBin();
 </script>
 </body>
 </html>
