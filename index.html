@@ -11,108 +11,99 @@
     /* HEADER */
     .header { text-align: center; margin-bottom: 24px; }
     .logo-box { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border-radius: 16px; padding: 12px 28px; margin-bottom: 10px; }
-    .logo-box .star { font-size: 44px; }
+    .logo-box .star { font-size: 40px; }
     .logo-box .title { font-weight: 900; font-size: 20px; letter-spacing: 1px; }
     .logo-box .subtitle { color: #f59e0b; font-weight: 700; font-size: 16px; letter-spacing: 2px; }
     .sub { color: rgba(255,255,255,0.7); font-size: 14px; }
 
-    /* MODE SELECTOR */
+    /* MODO SELECTOR */
     .modes { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .mode-btn { padding: 10px 20px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; font-weight: 700; font-size: 14px; background: rgba(255,255,255,0.10); color: white; transition: all 0.2s; }
+    .mode-btn { padding: 10px 20px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; font-weight: 700; font-size: 14px; background: rgba(255,255,255,0.1); color: white; transition: all 0.2s; }
     .mode-btn.active { background: #f59e0b; color: #1e3a5f; border-color: #f59e0b; }
     .mode-btn:hover:not(.active) { background: rgba(255,255,255,0.18); }
 
-    /* FLOW PANEL */
-    .flow-panel { max-width: 700px; margin: 0 auto 20px; }
+    /* WIZARD */
+    .wizard { max-width: 700px; margin: 0 auto 20px; }
 
-    /* STEPS INDICATOR */
     .steps-bar { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 20px; }
-    .step { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; }
-    .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); transition: all 0.3s; }
-    .step.done .step-circle { background: #22c55e; border-color: #22c55e; color: white; }
-    .step.active .step-circle { background: #f59e0b; border-color: #f59e0b; color: #1e3a5f; box-shadow: 0 0 0 4px rgba(245,158,11,0.25); }
-    .step-label { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 600; text-align: center; max-width: 70px; line-height: 1.3; }
-    .step.done .step-label, .step.active .step-label { color: rgba(255,255,255,0.85); }
-    .step-line { width: 48px; height: 2px; background: rgba(255,255,255,0.1); margin-bottom: 16px; transition: background 0.3s; }
+    .step-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; max-width: 140px; }
+    .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); transition: all 0.3s; }
+    .step-circle.done { background: #22c55e; border-color: #22c55e; color: white; }
+    .step-circle.active { background: #f59e0b; border-color: #f59e0b; color: #1e3a5f; transform: scale(1.15); }
+    .step-label { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; font-weight: 600; transition: color 0.3s; }
+    .step-label.done, .step-label.active { color: rgba(255,255,255,0.85); }
+    .step-line { flex: 1; height: 2px; background: rgba(255,255,255,0.12); margin-bottom: 18px; transition: background 0.3s; max-width: 60px; }
     .step-line.done { background: #22c55e; }
 
-    /* STEP CARD */
-    .step-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 20px 24px; margin-bottom: 16px; }
-    .step-card.active-card { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
-    .step-card.done-card { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); }
-    .step-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .step-card-num { width: 28px; height: 28px; border-radius: 50%; background: #f59e0b; color: #1e3a5f; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .step-card.done-card .step-card-num { background: #22c55e; color: white; }
-    .step-card-title { font-weight: 700; font-size: 15px; color: white; }
-    .step-card-done-val { margin-left: auto; font-size: 13px; color: #86efac; font-weight: 600; }
+    /* STEP PANELS */
+    .step-panel { background: rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1); }
+    .step-panel h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #f59e0b; display: flex; align-items: center; gap: 8px; }
+    .step-panel.locked { opacity: 0.4; pointer-events: none; }
+    .step-panel.completed { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); }
 
-    .step-input { display: flex; gap: 8px; flex-wrap: wrap; }
-    .step-input input, .step-input select { padding: 10px 16px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.2); font-size: 14px; outline: none; background: rgba(255,255,255,0.95); color: #1e3a5f; flex: 1; min-width: 160px; font-weight: 500; }
-    .step-input input:focus, .step-input select:focus { border-color: #f59e0b; }
+    .input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .input-row input, .input-row select { padding: 10px 16px; border-radius: 12px; border: none; font-size: 14px; outline: none; flex: 1; min-width: 160px; }
+    .btn { padding: 10px 20px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.2s; white-space: nowrap; }
+    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-green { background: #22c55e; color: white; }
+    .btn-yellow { background: #f59e0b; color: #1e3a5f; }
+    .btn-ghost { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-red { background: #ef4444; color: white; }
+    .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 8px; }
 
-    .btn-confirm { padding: 10px 22px; border-radius: 12px; border: none; background: #f59e0b; color: #1e3a5f; font-weight: 800; font-size: 14px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
-    .btn-confirm:hover { background: #fbbf24; }
-    .btn-confirm:disabled { opacity: 0.4; cursor: default; }
-    .btn-change { padding: 5px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; margin-left: auto; transition: all 0.2s; }
-    .btn-change:hover { color: white; border-color: rgba(255,255,255,0.5); }
+    .confirmed-row { display: flex; align-items: center; justify-content: space-between; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 10px; padding: 10px 14px; gap: 10px; flex-wrap: wrap; }
+    .confirmed-name { font-weight: 700; color: #86efac; font-size: 14px; }
 
-    .hint { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 8px; }
+    .hint { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 8px; }
 
-    /* CALENDAR */
-    .cal-section { max-width: 700px; margin: 0 auto; }
+    /* CALENDÁRIO */
     .month-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; }
-    .nav-btn { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 20px; padding: 6px 18px; cursor: pointer; font-size: 18px; font-weight: 700; transition: background 0.2s; }
-    .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.25); }
+    .nav-btn { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 20px; padding: 6px 18px; cursor: pointer; font-size: 18px; font-weight: 700; }
     .nav-btn:disabled { opacity: 0.3; cursor: default; }
     .month-label { font-weight: 800; font-size: 18px; min-width: 160px; text-align: center; }
-    .cal-wrap { background: rgba(255,255,255,0.06); border-radius: 16px; padding: 12px; }
-    .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+    .cal-wrap { max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.06); border-radius: 16px; padding: 12px; }
+    .weekdays { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 4px; }
     .wd { text-align: center; color: #f59e0b; font-weight: 700; font-size: 12px; padding: 4px 0; }
-    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .day { background: white; border: 1px solid #e5e7eb; border-radius: 8px; min-height: 68px; padding: 4px 6px; cursor: default; overflow: hidden; transition: transform 0.12s; }
+    .days { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+
+    .day { background: white; border: 1px solid #e5e7eb; border-radius: 8px; min-height: 68px; padding: 4px 5px; cursor: default; position: relative; overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; }
     .day.clickable { cursor: pointer; }
-    .day.clickable:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+    .day.clickable:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
     .day.avail { background: #22c55e; border: 2px solid #16a34a; }
     .day.booked { background: #3b82f6; border: 2px solid #2563eb; }
+    .day.parent-avail { background: #bbf7d0; border: 2px solid #22c55e; }
     .day.avail-view { background: #f0fdf4; border: 1px solid #bbf7d0; }
     .day.booked-view { background: #dbeafe; border: 1px solid #93c5fd; }
-    .day.parent-avail { background: #bbf7d0; border: 2px solid #22c55e; }
     .day-num { font-weight: 700; font-size: 13px; color: #374151; }
     .day.avail .day-num, .day.booked .day-num { color: white; }
     .tag { font-size: 10px; font-weight: 600; border-radius: 4px; padding: 1px 4px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: white; display: block; }
     .tag.green { background: #15803d; }
     .tag.blue { background: #1d4ed8; }
-    .btn-red { background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; margin-top: 2px; display: block; }
-
-    /* MSG */
-    .msg-box { max-width: 700px; margin: 0 auto 14px; text-align: center; border-radius: 12px; padding: 10px 18px; font-size: 13px; font-weight: 600; display: none; }
-    .msg-box.ok { background: rgba(34,197,94,0.18); border: 1px solid rgba(34,197,94,0.4); color: #86efac; }
-    .msg-box.err { background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
+    .del-btn { display: block; font-size: 9px; font-weight: 700; border: none; border-radius: 4px; padding: 2px 5px; cursor: pointer; margin-top: 2px; width: 100%; text-align: center; }
+    .del-avail { background: rgba(239,68,68,0.18); color: #fca5a5; }
+    .del-avail:hover { background: #ef4444; color: white; }
+    .del-book { background: rgba(239,68,68,0.18); color: #fca5a5; }
+    .del-book:hover { background: #ef4444; color: white; }
 
     /* LEGEND */
-    .legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.65); }
-    .legend-dot { width: 13px; height: 13px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); }
+    .legend { display: flex; justify-content: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.65); }
+    .legend-dot { width: 13px; height: 13px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); }
 
-    /* SYNCING */
-    .syncing { position: fixed; bottom: 16px; right: 16px; background: rgba(0,0,0,0.75); color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; display: none; z-index: 999; }
+    /* MSG */
+    .msg { max-width: 700px; margin: 0 auto 12px; text-align: center; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 600; display: none; }
+    .msg.ok { background: rgba(34,197,94,0.2); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+    .msg.err { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
 
-    /* CONFIRM MODAL */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: #1e3a5f; border: 1px solid rgba(245,158,11,0.4); border-radius: 20px; padding: 28px; max-width: 380px; width: 100%; text-align: center; }
-    .modal h3 { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
-    .modal p { color: rgba(255,255,255,0.75); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+    .syncing { position: fixed; bottom: 16px; right: 16px; background: rgba(0,0,0,0.75); color: white; padding: 8px 14px; border-radius: 20px; font-size: 12px; display: none; }
+
+    /* MODAL CONFIRM */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: none; align-items: center; justify-content: center; }
+    .modal-bg.open { display: flex; }
+    .modal { background: #1e3a5f; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 28px; max-width: 380px; width: 90%; text-align: center; }
+    .modal h3 { font-size: 17px; margin-bottom: 10px; color: white; }
+    .modal p { color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 22px; }
     .modal-btns { display: flex; gap: 10px; justify-content: center; }
-    .btn-modal-ok { padding: 10px 24px; border-radius: 12px; border: none; background: #22c55e; color: white; font-weight: 800; cursor: pointer; font-size: 14px; }
-    .btn-modal-cancel { padding: 10px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: white; font-weight: 700; cursor: pointer; font-size: 14px; }
-
-    .loading { text-align: center; padding: 40px; color: rgba(255,255,255,0.5); }
-
-    @media (max-width: 480px) {
-      .step-line { width: 24px; }
-      .step-label { max-width: 54px; font-size: 9px; }
-    }
   </style>
 </head>
 <body>
@@ -126,415 +117,531 @@
   <div class="sub">Calendário de Visitas 2026</div>
 </div>
 
-<!-- MODE SELECTOR -->
+<!-- SELETOR DE MODO -->
 <div class="modes">
-  <button class="mode-btn active" onclick="setMode('view')">👁 Visualizar</button>
+  <button class="mode-btn active" onclick="setMode('view')">👁️ Visualizar</button>
   <button class="mode-btn" onclick="setMode('counselor')">🧭 Sou Conselheiro</button>
   <button class="mode-btn" onclick="setMode('parent')">👨‍👧 Sou Pai/Responsável</button>
 </div>
 
-<!-- FLOW PANEL (counselor / parent) -->
-<div class="flow-panel" id="flow-panel" style="display:none"></div>
+<!-- WIZARD CONSELHEIRO -->
+<div class="wizard" id="wizard-counselor" style="display:none">
 
-<!-- MSG -->
-<div class="msg-box" id="msg-box"></div>
-
-<!-- CALENDAR -->
-<div class="cal-section">
-  <div class="month-nav">
-    <button class="nav-btn" id="prev-btn" onclick="changeMonth(-1)">‹</button>
-    <span class="month-label" id="month-label"></span>
-    <button class="nav-btn" id="next-btn" onclick="changeMonth(1)">›</button>
-  </div>
-  <div class="cal-wrap">
-    <div class="weekdays">
-      <div class="wd">Dom</div><div class="wd">Seg</div><div class="wd">Ter</div>
-      <div class="wd">Qua</div><div class="wd">Qui</div><div class="wd">Sex</div><div class="wd">Sáb</div>
+  <!-- Barra de passos -->
+  <div class="steps-bar" id="steps-counselor">
+    <div class="step-item">
+      <div class="step-circle active" id="sc1">1</div>
+      <div class="step-label active" id="sl1">Identificação</div>
     </div>
-    <div class="days" id="days-grid"><div class="loading">🔄 Conectando...</div></div>
+    <div class="step-line" id="sline1"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc2">2</div>
+      <div class="step-label" id="sl2">Marcar dias</div>
+    </div>
+    <div class="step-line" id="sline2"></div>
+    <div class="step-item">
+      <div class="step-circle" id="sc3">3</div>
+      <div class="step-label" id="sl3">Gerenciar</div>
+    </div>
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Disponível (meu)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Agendado</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4;border-color:#bbf7d0"></div> Disponível (geral)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#dbeafe;border-color:#93c5fd"></div> Agendado (geral)</div>
+
+  <!-- Passo 1 -->
+  <div class="step-panel" id="cp1">
+    <h3>① Qual é o seu nome?</h3>
+    <div class="input-row">
+      <input id="counselor-input" placeholder="Digite seu nome completo" onkeydown="if(event.key==='Enter')enterCounselor()" />
+      <button class="btn btn-yellow" onclick="enterCounselor()">Confirmar →</button>
+    </div>
   </div>
+
+  <!-- Passo 2 -->
+  <div class="step-panel locked" id="cp2">
+    <h3>② Clique nos dias que você está disponível</h3>
+    <div class="confirmed-row" id="c-confirmed-row" style="display:none; margin-bottom:12px;">
+      <span class="confirmed-name" id="c-confirmed-name"></span>
+      <button class="btn btn-ghost btn-sm" onclick="resetCounselor()">✕ Trocar nome</button>
+    </div>
+    <p class="hint">👆 Use o calendário abaixo para marcar ou desmarcar seus dias disponíveis.</p>
+  </div>
+
+  <!-- Passo 3 -->
+  <div class="step-panel locked" id="cp3">
+    <h3>③ Gerenciar disponibilidades e agendamentos</h3>
+    <p class="hint">Clique em um dia marcado no calendário para ver as opções de remoção ou cancelamento.</p>
+    <div id="c-summary" style="margin-top:12px;"></div>
+  </div>
+
 </div>
 
-<!-- CONFIRM MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <h3 id="modal-title"></h3>
-    <p id="modal-body"></p>
-    <div class="modal-btns">
-      <button class="btn-modal-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn-modal-ok" id="modal-ok-btn">Confirmar</button>
+<!-- WIZARD PAI -->
+<div class="wizard" id="wizard-parent" style="display:none">
+
+  <div class="steps-bar">
+    <div class="step-item">
+      <div class="step-circle active" id="pp1">1</div>
+      <div class="step-label active" id="pl1">Conselheiro</div>
+    </div>
+    <div class="step-line" id="pline1"></div>
+    <div class="step-item">
+      <div class="step-circle" id="pp2">2</div>
+      <div class="step-label" id="pl2">Desbravador</div>
+    </div>
+    <div class="step-line" id="pline2"></div>
+    <div class="step-item">
+      <div class="step-circle" id="pp3">3</div>
+      <div class="step-label" id="pl3">Escolher dia</div>
     </div>
   </div>
+
+  <!-- Passo 1 -->
+  <div class="step-panel" id="pp-step1">
+    <h3>① Escolha o conselheiro</h3>
+    <div class="input-row">
+      <select id="counselor-select" onchange="selectCounselor()">
+        <option value="">— Selecione o conselheiro —</option>
+      </select>
+    </div>
+    <p class="hint">Apenas conselheiros com dias disponíveis aparecem na lista.</p>
+  </div>
+
+  <!-- Passo 2 -->
+  <div class="step-panel locked" id="pp-step2">
+    <h3>② Nome do desbravador</h3>
+    <div class="confirmed-row" id="p-counselor-row" style="display:none; margin-bottom:10px;">
+      <span class="confirmed-name" id="p-counselor-name"></span>
+      <button class="btn btn-ghost btn-sm" onclick="resetParent()">✕ Trocar conselheiro</button>
+    </div>
+    <div class="input-row">
+      <input id="pathfinder-input" placeholder="Nome do desbravador" onkeydown="if(event.key==='Enter')enterPathfinder()" />
+      <button class="btn btn-yellow" onclick="enterPathfinder()">Confirmar →</button>
+    </div>
+  </div>
+
+  <!-- Passo 3 -->
+  <div class="step-panel locked" id="pp-step3">
+    <h3>③ Clique em um dia disponível para agendar</h3>
+    <div class="confirmed-row" id="p-booking-row" style="display:none; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+      <span class="confirmed-name" id="p-booking-info"></span>
+      <button class="btn btn-ghost btn-sm" onclick="resetPathfinder()">✕ Trocar desbravador</button>
+    </div>
+    <p class="hint" id="p-step3-hint">👆 Os dias verdes estão disponíveis. Clique para agendar.</p>
+    <div id="p-booked-info" style="margin-top:10px;"></div>
+  </div>
+
+</div>
+
+<!-- MENSAGEM -->
+<div class="msg" id="msg"></div>
+
+<!-- NAVEGAÇÃO DO MÊS -->
+<div class="month-nav">
+  <button class="nav-btn" id="prev-btn" onclick="changeMonth(-1)">‹</button>
+  <span class="month-label" id="month-label"></span>
+  <button class="nav-btn" id="next-btn" onclick="changeMonth(1)">›</button>
+</div>
+
+<!-- CALENDÁRIO -->
+<div class="cal-wrap">
+  <div class="weekdays">
+    <div class="wd">Dom</div><div class="wd">Seg</div><div class="wd">Ter</div>
+    <div class="wd">Qua</div><div class="wd">Qui</div><div class="wd">Sex</div><div class="wd">Sáb</div>
+  </div>
+  <div class="days" id="days-grid"><div style="padding:40px;text-align:center;color:rgba(255,255,255,0.5)">🔄 Conectando...</div></div>
+</div>
+
+<!-- LEGENDA -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Minha disponibilidade</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Agendado</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#bbf7d0"></div> Disponível p/ agendar</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4;border-color:#bbf7d0"></div> Disponível (geral)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#dbeafe;border-color:#93c5fd"></div> Agendado (geral)</div>
 </div>
 
 <div class="syncing" id="syncing">💾 Salvando...</div>
 
+<!-- MODAL CONFIRMAÇÃO -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Confirmar</h3>
+    <p id="modal-body"></p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-red" id="modal-confirm-btn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCMDG0jtTPYIEPJpYn3_Hd-nmKxRvWzS2Q",
-    authDomain: "orion-brooklin.firebaseapp.com",
-    databaseURL: "https://orion-brooklin-default-rtdb.firebaseio.com",
-    projectId: "orion-brooklin",
-    storageBucket: "orion-brooklin.firebasestorage.app",
-    messagingSenderId: "238322280358",
-    appId: "1:238322280358:web:d49d6f8b6e5d9f8d029167"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCMDG0jtTPYIEPJpYn3_Hd-nmKxRvWzS2Q",
+  authDomain: "orion-brooklin.firebaseapp.com",
+  databaseURL: "https://orion-brooklin-default-rtdb.firebaseio.com",
+  projectId: "orion-brooklin",
+  storageBucket: "orion-brooklin.firebasestorage.app",
+  messagingSenderId: "238322280358",
+  appId: "1:238322280358:web:d49d6f8b6e5d9f8d029167"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const calRef = ref(db, "calendario2026");
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const calRef = ref(db, "calendario2026");
 
-  const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
-  // State
-  let mode = "view";
-  let month = new Date().getMonth();
-  let data = {};
-  // Counselor flow
-  let cStep = 1; // 1=name, 2=month(auto), 3=click days
-  let cName = "";
-  // Parent flow
-  let pStep = 1; // 1=counselor, 2=pathfinder name, 3=click day
-  let pCounselor = "";
-  let pPathfinder = "";
-  // Modal
-  let modalAction = null;
+let mode = "view", month = new Date().getMonth(), data = {};
+let counselorName = "", selectedCounselor = "", pathfinderName = "";
+let modalCallback = null;
 
-  onValue(calRef, snap => { data = snap.val() || {}; render(); });
+onValue(calRef, snap => { data = snap.val() || {}; render(); });
 
-  // ── Helpers ──
-  function dk(m, d) { return `2026-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
-  function daysIn(m) { return new Date(2026, m+1, 0).getDate(); }
-  function firstDay(m) { return new Date(2026, m, 1).getDay(); }
-  function allCounselors() {
-    const s = new Set();
-    Object.values(data).forEach(v => {
-      (v.available||[]).forEach(c => s.add(c));
-      Object.keys(v.booked||{}).forEach(c => s.add(c));
+function dk(m,d) { return `2026-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
+function daysIn(m) { return new Date(2026,m+1,0).getDate(); }
+function firstDay(m) { return new Date(2026,m,1).getDay(); }
+
+function allCounselors() {
+  const s = new Set();
+  Object.values(data).forEach(v => {
+    (v.available||[]).forEach(c => s.add(c));
+    Object.keys(v.booked||{}).forEach(c => s.add(c));
+  });
+  return [...s].sort();
+}
+
+async function save() {
+  const el = document.getElementById("syncing");
+  el.style.display = "block";
+  await set(calRef, data);
+  el.style.display = "none";
+}
+
+function showMsg(m, type="ok") {
+  const el = document.getElementById("msg");
+  el.textContent = m; el.className = "msg " + type; el.style.display = "block";
+  setTimeout(() => el.style.display = "none", 3500);
+}
+
+function openModal(title, body, cb, confirmLabel="Confirmar", confirmClass="btn-red") {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body").textContent = body;
+  const btn = document.getElementById("modal-confirm-btn");
+  btn.textContent = confirmLabel;
+  btn.className = "btn " + confirmClass;
+  modalCallback = cb;
+  document.getElementById("modal-bg").classList.add("open");
+}
+
+window.closeModal = () => {
+  document.getElementById("modal-bg").classList.remove("open");
+  modalCallback = null;
+};
+
+document.getElementById("modal-confirm-btn").onclick = () => {
+  if (modalCallback) modalCallback();
+  closeModal();
+};
+
+// ── MODO ──
+window.setMode = m => {
+  mode = m;
+  document.querySelectorAll(".mode-btn").forEach((b,i) => b.classList.toggle("active", ["view","counselor","parent"][i]===m));
+  document.getElementById("wizard-counselor").style.display = m==="counselor" ? "block" : "none";
+  document.getElementById("wizard-parent").style.display = m==="parent" ? "block" : "none";
+  if (m==="parent") populateCounselorSelect();
+  render();
+};
+
+// ── CONSELHEIRO ──
+window.enterCounselor = () => {
+  const v = document.getElementById("counselor-input").value.trim();
+  if (!v) { showMsg("Digite seu nome.", "err"); return; }
+  counselorName = v;
+  // Step UI
+  setStep("counselor", 2);
+  document.getElementById("c-confirmed-name").textContent = "✓ " + v;
+  document.getElementById("c-confirmed-row").style.display = "flex";
+  showMsg(`Olá, ${v}! Agora clique nos dias disponíveis no calendário.`, "ok");
+  render();
+};
+
+window.resetCounselor = () => {
+  counselorName = "";
+  document.getElementById("counselor-input").value = "";
+  setStep("counselor", 1);
+  render();
+};
+
+// ── PAI ──
+window.selectCounselor = () => {
+  const v = document.getElementById("counselor-select").value;
+  if (!v) return;
+  selectedCounselor = v;
+  setStep("parent", 2);
+  document.getElementById("p-counselor-name").textContent = "✓ Conselheiro: " + v;
+  document.getElementById("p-counselor-row").style.display = "flex";
+  render();
+};
+
+window.resetParent = () => {
+  selectedCounselor = ""; pathfinderName = "";
+  document.getElementById("pathfinder-input").value = "";
+  setStep("parent", 1);
+  render();
+};
+
+window.enterPathfinder = () => {
+  const v = document.getElementById("pathfinder-input").value.trim();
+  if (!v) { showMsg("Digite o nome do desbravador.", "err"); return; }
+  pathfinderName = v;
+  setStep("parent", 3);
+  document.getElementById("p-booking-info").textContent = `✓ Desbravador: ${v} · Conselheiro: ${selectedCounselor}`;
+  document.getElementById("p-booking-row").style.display = "flex";
+  updateParentStep3();
+  render();
+};
+
+window.resetPathfinder = () => {
+  pathfinderName = "";
+  document.getElementById("pathfinder-input").value = "";
+  setStep("parent", 2);
+  render();
+};
+
+function updateParentStep3() {
+  const div = document.getElementById("p-booked-info");
+  // Find if already booked
+  let found = null;
+  Object.entries(data).forEach(([k, v]) => {
+    if ((v.booked||{})[selectedCounselor] === pathfinderName) found = k;
+  });
+  if (found) {
+    const [,m,d] = found.split("-");
+    div.innerHTML = `<div style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <span style="color:#93c5fd;font-weight:700;font-size:13px;">📅 Agendado: ${d}/${m}/2026 com ${selectedCounselor}</span>
+      <button class="btn btn-red btn-sm" onclick="cancelBookingParent('${found}')">❌ Cancelar agendamento</button>
+    </div>`;
+    document.getElementById("p-step3-hint").textContent = "Já existe um agendamento. Você pode cancelá-lo abaixo ou fechar.";
+  } else {
+    div.innerHTML = "";
+    document.getElementById("p-step3-hint").textContent = "👆 Os dias verdes estão disponíveis. Clique para agendar.";
+  }
+}
+
+window.cancelBookingParent = (k) => {
+  const booked = (data[k]?.booked||{})[selectedCounselor];
+  openModal("Cancelar agendamento", `Cancelar a visita de "${booked}" com ${selectedCounselor}?`, async () => {
+    delete data[k].booked[selectedCounselor];
+    await save();
+    showMsg("Agendamento cancelado com sucesso.", "ok");
+    updateParentStep3();
+  }, "Sim, cancelar", "btn-red");
+};
+
+// ── STEPS ──
+function setStep(who, step) {
+  if (who === "counselor") {
+    [1,2,3].forEach(i => {
+      const c = document.getElementById(`sc${i}`), l = document.getElementById(`sl${i}`);
+      const panel = document.getElementById(`cp${i}`);
+      if (i < step) { c.className="step-circle done"; c.textContent="✓"; l.className="step-label done"; panel.classList.remove("locked"); panel.classList.add("completed"); }
+      else if (i === step) { c.className="step-circle active"; l.className="step-label active"; panel.classList.remove("locked","completed"); }
+      else { c.className="step-circle"; l.className="step-label"; panel.classList.add("locked"); panel.classList.remove("completed"); }
     });
-    return [...s].sort();
+    [1,2].forEach(i => {
+      const l = document.getElementById(`sline${i}`);
+      l.className = "step-line" + (i < step ? " done" : "");
+    });
+  } else {
+    [1,2,3].forEach(i => {
+      const c = document.getElementById(`pp${i}`), l = document.getElementById(`pl${i}`);
+      const panel = document.getElementById(`pp-step${i}`);
+      if (i < step) { c.className="step-circle done"; c.textContent="✓"; l.className="step-label done"; panel.classList.remove("locked"); panel.classList.add("completed"); }
+      else if (i === step) { c.className="step-circle active"; l.className="step-label active"; panel.classList.remove("locked","completed"); }
+      else { c.className="step-circle"; l.className="step-label"; panel.classList.add("locked"); panel.classList.remove("completed"); }
+    });
+    [1,2].forEach(i => {
+      const l = document.getElementById(`pline${i}`);
+      l.className = "step-line" + (i < step ? " done" : "");
+    });
   }
-  async function save() {
-    document.getElementById("syncing").style.display = "block";
-    await set(calRef, data);
-    document.getElementById("syncing").style.display = "none";
-  }
-  function showMsg(txt, type="ok") {
-    const el = document.getElementById("msg-box");
-    el.textContent = txt; el.className = "msg-box " + type; el.style.display = "block";
-    setTimeout(() => el.style.display = "none", 3500);
-  }
-  function openModal(title, body, action) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal-body").textContent = body;
-    modalAction = action;
-    document.getElementById("modal").classList.add("open");
-  }
-  window.closeModal = () => { document.getElementById("modal").classList.remove("open"); modalAction = null; };
-  document.getElementById("modal-ok-btn").onclick = () => { closeModal(); if (modalAction) modalAction(); };
+}
 
-  // ── Mode ──
-  window.setMode = m => {
-    mode = m;
-    cStep = 1; cName = "";
-    pStep = 1; pCounselor = ""; pPathfinder = "";
-    document.querySelectorAll(".mode-btn").forEach((b,i) => b.classList.toggle("active", ["view","counselor","parent"][i]===m));
-    document.getElementById("flow-panel").style.display = m === "view" ? "none" : "block";
-    render();
-  };
+function populateCounselorSelect() {
+  const sel = document.getElementById("counselor-select");
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Selecione o conselheiro —</option>';
+  allCounselors().forEach(c => { const o = document.createElement("option"); o.value=c; o.textContent=c; sel.appendChild(o); });
+  if (cur) sel.value = cur;
+}
 
-  window.changeMonth = d => { month = Math.max(0, Math.min(11, month+d)); renderCalendar(); };
+window.changeMonth = d => { month = Math.max(0,Math.min(11,month+d)); render(); };
 
-  // ── Counselor flow ──
-  window.confirmCName = () => {
-    const v = document.getElementById("c-name-input")?.value.trim();
-    if (!v) return;
-    cName = v; cStep = 3;
-    showMsg(`Olá, ${cName}! Clique nos dias para marcar ou desmarcar sua disponibilidade.`);
-    render();
-  };
-  window.resetCFlow = () => { cStep = 1; cName = ""; render(); };
-
-  // ── Parent flow ──
-  window.confirmPCounselor = () => {
-    const v = document.getElementById("p-counselor-select")?.value;
-    if (!v) return;
-    pCounselor = v; pStep = 2; render();
-  };
-  window.confirmPPathfinder = () => {
-    const v = document.getElementById("p-pathfinder-input")?.value.trim();
-    if (!v) return;
-    pPathfinder = v; pStep = 3;
-    showMsg(`Olá! Agora clique em um dia verde para agendar a visita de ${pPathfinder} com ${pCounselor}.`);
-    render();
-  };
-  window.resetPFlow = step => { pStep = step; if (step <= 1) pCounselor = ""; if (step <= 2) pPathfinder = ""; render(); };
-
-  // ── Calendar actions ──
-  async function toggleAvail(d) {
-    const k = dk(month, d);
-    if (!data[k]) data[k] = { available: [], booked: {} };
-    const avail = data[k].available || [];
-    const idx = avail.indexOf(cName);
-    if (idx >= 0) {
-      openModal("Remover disponibilidade?", `Remover o dia ${d}/${month+1}/2026 da sua disponibilidade?${data[k].booked?.[cName] ? " O agendamento de "+data[k].booked[cName]+" também será cancelado." : ""}`, async () => {
+// ── AÇÕES DO CALENDÁRIO ──
+async function toggleAvailability(d) {
+  const k = dk(month, d);
+  if (!data[k]) data[k] = { available: [], booked: {} };
+  const avail = data[k].available || [];
+  const idx = avail.indexOf(counselorName);
+  if (idx >= 0) {
+    // Tem agendamento? confirma antes
+    const hasBook = (data[k].booked||{})[counselorName];
+    if (hasBook) {
+      openModal("Remover disponibilidade", `O desbravador "${hasBook}" está agendado neste dia. Remover disponibilidade cancelará o agendamento. Deseja continuar?`, async () => {
         avail.splice(idx, 1);
-        if (data[k].booked) delete data[k].booked[cName];
+        delete data[k].booked[counselorName];
         data[k].available = avail;
         await save();
-        showMsg(`Dia ${d}/${month+1} removido da sua disponibilidade.`);
+        showMsg("Disponibilidade e agendamento removidos.", "ok");
+        updateCounselorSummary();
       });
-    } else {
-      avail.push(cName);
-      data[k].available = avail;
-      await save();
-      showMsg(`✅ Dia ${d}/${month+1} marcado como disponível!`);
+      return;
     }
+    avail.splice(idx, 1);
+    data[k].available = avail;
+    await save();
+    showMsg("Dia removido da disponibilidade.", "ok");
+  } else {
+    avail.push(counselorName);
+    data[k].available = avail;
+    await save();
+    showMsg(`Dia ${d}/${month+1} marcado como disponível! ✓`, "ok");
   }
+  updateCounselorSummary();
+}
 
-  async function bookDay(d) {
-    const k = dk(month, d);
-    if (!(data[k]?.available||[]).includes(pCounselor)) return;
-    if (data[k]?.booked?.[pCounselor]) { showMsg("Já há um desbravador agendado nesta data.", "err"); return; }
-    openModal("Confirmar agendamento?", `Agendar visita de ${pPathfinder} com ${pCounselor} no dia ${d}/${month+1}/2026?`, async () => {
+async function bookDate(d) {
+  const k = dk(month, d);
+  if (!(data[k]?.available||[]).includes(selectedCounselor)) { showMsg("Dia não disponível.", "err"); return; }
+  if ((data[k]?.booked||{})[selectedCounselor]) { showMsg("Já há um agendamento neste dia.", "err"); return; }
+  openModal("Confirmar agendamento",
+    `Agendar visita de "${pathfinderName}" com ${selectedCounselor} no dia ${d}/${month+1}/2026?`,
+    async () => {
       if (!data[k].booked) data[k].booked = {};
-      data[k].booked[pCounselor] = pPathfinder;
+      data[k].booked[selectedCounselor] = pathfinderName;
       await save();
-      showMsg(`✅ Visita de ${pPathfinder} com ${pCounselor} confirmada para ${d}/${month+1}/2026!`);
-      // Reset to view
-      setTimeout(() => { window.setMode("view"); }, 1800);
-    });
-  }
+      showMsg(`✅ Visita agendada! ${pathfinderName} · ${d}/${month+1} · ${selectedCounselor}`, "ok");
+      updateParentStep3();
+    }, "✓ Confirmar agendamento", "btn-green");
+}
 
-  async function cancelBooking(k, cs) {
-    const name = data[k]?.booked?.[cs];
-    openModal("Cancelar agendamento?", `Cancelar a visita de "${name}" com ${cs}?`, async () => {
-      delete data[k].booked[cs];
-      await save();
-      showMsg("Agendamento cancelado.", "ok");
-    });
-  }
-
-  async function removeAvail(k, cs) {
-    openModal("Remover disponibilidade?", `Remover disponibilidade de ${cs} nesta data?${data[k]?.booked?.[cs] ? " O agendamento de "+data[k].booked[cs]+" também será cancelado." : ""}`, async () => {
-      data[k].available = (data[k].available||[]).filter(c => c !== cs);
-      if (data[k].booked) delete data[k].booked[cs];
-      await save();
-      showMsg("Disponibilidade removida.");
-    });
-  }
-
-  // ── Render flow panel ──
-  function renderFlowPanel() {
-    const panel = document.getElementById("flow-panel");
-    if (mode === "view") { panel.style.display = "none"; return; }
-    panel.style.display = "block";
-
-    if (mode === "counselor") {
-      panel.innerHTML = `
-        ${stepsBar(["Seu nome","Mês","Marcar dias"], cStep === 3 ? 3 : cStep)}
-        ${cStep === 1 ? `
-          <div class="step-card active-card">
-            <div class="step-card-header">
-              <div class="step-card-num">1</div>
-              <span class="step-card-title">Qual é o seu nome?</span>
-            </div>
-            <div class="step-input">
-              <input id="c-name-input" placeholder="Digite seu nome completo" onkeydown="if(event.key==='Enter')confirmCName()" autofocus />
-              <button class="btn-confirm" onclick="confirmCName()">Continuar →</button>
-            </div>
-          </div>` : `
-          <div class="step-card done-card">
-            <div class="step-card-header">
-              <div class="step-card-num">✓</div>
-              <span class="step-card-title">Conselheiro</span>
-              <span class="step-card-done-val">✓ ${cName}</span>
-              <button class="btn-change" onclick="resetCFlow()">Trocar</button>
-            </div>
-          </div>
-          <div class="step-card done-card">
-            <div class="step-card-header">
-              <div class="step-card-num">✓</div>
-              <span class="step-card-title">Mês selecionado</span>
-              <span class="step-card-done-val">✓ ${MONTHS[month]}</span>
-            </div>
-          </div>
-          <div class="step-card active-card">
-            <div class="step-card-header">
-              <div class="step-card-num">3</div>
-              <span class="step-card-title">Clique nos dias para marcar disponibilidade</span>
-            </div>
-            <p class="hint">🟢 Clique para marcar um dia · Clique novamente para desmarcar</p>
-          </div>`}`;
+function updateCounselorSummary() {
+  if (!counselorName) return;
+  const div = document.getElementById("c-summary");
+  const days = [];
+  Object.entries(data).forEach(([k, v]) => {
+    if ((v.available||[]).includes(counselorName)) {
+      const [,m,d] = k.split("-");
+      const booked = (v.booked||{})[counselorName];
+      days.push({ k, m, d, booked });
     }
+  });
+  if (!days.length) { div.innerHTML = `<p style="color:rgba(255,255,255,0.4);font-size:13px;">Nenhum dia marcado ainda.</p>`; return; }
+  days.sort((a,b) => a.k.localeCompare(b.k));
+  div.innerHTML = days.map(({ k, m, d, booked }) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.06);border-radius:10px;padding:9px 12px;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:600;">📅 ${d}/${m}/2026
+        ${booked ? `<span style="color:#93c5fd;margin-left:8px;">· ${booked} agendado</span>` : `<span style="color:#86efac;margin-left:8px;">· disponível</span>`}
+      </span>
+      <div style="display:flex;gap:6px;">
+        ${booked ? `<button class="btn btn-red btn-sm" onclick="cancelBookingCounselor('${k}')">❌ Cancelar visita</button>` : ""}
+        <button class="btn btn-ghost btn-sm" style="border-color:rgba(239,68,68,0.3);color:#fca5a5;" onclick="removeAvailCounselor('${k}')">🚫 Remover dia</button>
+      </div>
+    </div>`).join("");
+}
 
-    if (mode === "parent") {
-      const counselors = allCounselors();
-      panel.innerHTML = `
-        ${stepsBar(["Conselheiro","Desbravador","Escolher dia"], pStep)}
-        ${pStep === 1 ? `
-          <div class="step-card active-card">
-            <div class="step-card-header">
-              <div class="step-card-num">1</div>
-              <span class="step-card-title">Escolha o conselheiro</span>
-            </div>
-            <div class="step-input">
-              <select id="p-counselor-select">
-                <option value="">Selecione...</option>
-                ${counselors.map(c => `<option value="${c}">${c}</option>`).join("")}
-              </select>
-              <button class="btn-confirm" onclick="confirmPCounselor()">Continuar →</button>
-            </div>
-            ${counselors.length === 0 ? `<p class="hint" style="color:#fca5a5;">⚠️ Nenhum conselheiro cadastrou disponibilidade ainda.</p>` : `<p class="hint">Escolha o conselheiro que irá visitar seu desbravador.</p>`}
-          </div>` : `
-          <div class="step-card done-card">
-            <div class="step-card-header">
-              <div class="step-card-num">✓</div>
-              <span class="step-card-title">Conselheiro</span>
-              <span class="step-card-done-val">✓ ${pCounselor}</span>
-              <button class="btn-change" onclick="resetPFlow(1)">Trocar</button>
-            </div>
-          </div>`}
+window.cancelBookingCounselor = k => {
+  const booked = (data[k]?.booked||{})[counselorName];
+  openModal("Cancelar visita", `Cancelar a visita agendada de "${booked}"?`, async () => {
+    delete data[k].booked[counselorName];
+    await save();
+    showMsg("Visita cancelada.", "ok");
+    updateCounselorSummary();
+  });
+};
 
-        ${pStep >= 2 ? (pStep === 2 ? `
-          <div class="step-card active-card">
-            <div class="step-card-header">
-              <div class="step-card-num">2</div>
-              <span class="step-card-title">Nome do desbravador</span>
-            </div>
-            <div class="step-input">
-              <input id="p-pathfinder-input" placeholder="Nome do desbravador" onkeydown="if(event.key==='Enter')confirmPPathfinder()" autofocus />
-              <button class="btn-confirm" onclick="confirmPPathfinder()">Continuar →</button>
-            </div>
-            <p class="hint">Digite o nome do desbravador que receberá a visita.</p>
-          </div>` : `
-          <div class="step-card done-card">
-            <div class="step-card-header">
-              <div class="step-card-num">✓</div>
-              <span class="step-card-title">Desbravador</span>
-              <span class="step-card-done-val">✓ ${pPathfinder}</span>
-              <button class="btn-change" onclick="resetPFlow(2)">Trocar</button>
-            </div>
-          </div>`) : ""}
+window.removeAvailCounselor = k => {
+  const booked = (data[k]?.booked||{})[counselorName];
+  const msg = booked ? `Remover este dia cancelará também a visita de "${booked}". Confirmar?` : "Remover este dia da sua disponibilidade?";
+  openModal("Remover disponibilidade", msg, async () => {
+    data[k].available = (data[k].available||[]).filter(c => c !== counselorName);
+    if (booked) delete data[k].booked[counselorName];
+    await save();
+    showMsg("Dia removido.", "ok");
+    updateCounselorSummary();
+  });
+};
 
-        ${pStep === 3 ? `
-          <div class="step-card active-card">
-            <div class="step-card-header">
-              <div class="step-card-num">3</div>
-              <span class="step-card-title">Clique em um dia disponível para agendar</span>
-            </div>
-            <p class="hint">🟢 Dias verdes estão disponíveis · Clique para confirmar o agendamento</p>
-          </div>` : ""}`;
-    }
-  }
+// ── RENDER ──
+function render() {
+  document.getElementById("month-label").textContent = MONTHS[month] + " 2026";
+  document.getElementById("prev-btn").disabled = month === 0;
+  document.getElementById("next-btn").disabled = month === 11;
 
-  function stepsBar(labels, current) {
-    let html = `<div class="steps-bar">`;
-    labels.forEach((l, i) => {
-      const n = i + 1;
-      const state = n < current ? "done" : n === current ? "active" : "";
-      html += `<div class="step ${state}"><div class="step-circle">${n < current ? "✓" : n}</div><div class="step-label">${l}</div></div>`;
-      if (i < labels.length - 1) html += `<div class="step-line ${n < current ? "done" : ""}"></div>`;
-    });
-    return html + `</div>`;
-  }
+  const grid = document.getElementById("days-grid");
+  grid.innerHTML = "";
+  const first = firstDay(month), total = daysIn(month);
 
-  // ── Render calendar ──
-  function renderCalendar() {
-    document.getElementById("month-label").textContent = MONTHS[month] + " 2026";
-    document.getElementById("prev-btn").disabled = month === 0;
-    document.getElementById("next-btn").disabled = month === 11;
+  for (let i = 0; i < first; i++) grid.appendChild(document.createElement("div"));
 
-    const grid = document.getElementById("days-grid");
-    grid.innerHTML = "";
-    const first = firstDay(month), total = daysIn(month);
+  for (let d = 1; d <= total; d++) {
+    const k = dk(month, d);
+    const entry = data[k] || { available: [], booked: {} };
+    const avail = entry.available || [];
+    const booked = entry.booked || {};
+    const div = document.createElement("div");
+    div.className = "day";
+    let clickable = false;
 
-    for (let i = 0; i < first; i++) grid.appendChild(document.createElement("div"));
+    if (mode === "counselor" && counselorName) {
+      const isMine = avail.includes(counselorName);
+      const myBook = booked[counselorName];
+      if (myBook) div.classList.add("booked");
+      else if (isMine) div.classList.add("avail");
+      clickable = true;
+      div.onclick = () => toggleAvailability(d);
 
-    for (let d = 1; d <= total; d++) {
-      const k = dk(month, d);
-      const entry = data[k] || { available: [], booked: {} };
-      const avail = entry.available || [];
-      const booked = entry.booked || {};
-      const div = document.createElement("div");
-      div.className = "day";
-      let clickable = false;
+      const num = document.createElement("div"); num.className="day-num"; num.textContent=d; div.appendChild(num);
+      if (myBook) {
+        const t = document.createElement("span"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t);
+      }
 
-      if (mode === "counselor" && cStep === 3) {
-        const isMine = avail.includes(cName);
-        const myBook = booked[cName];
+    } else if (mode === "parent") {
+      if (selectedCounselor && pathfinderName) {
+        const isAvail = avail.includes(selectedCounselor);
+        const myBook = booked[selectedCounselor];
         if (myBook) div.classList.add("booked");
-        else if (isMine) div.classList.add("avail");
-        clickable = true;
-        div.onclick = () => toggleAvail(d);
-
-      } else if (mode === "parent" && pStep === 3) {
-        const isAvail = avail.includes(pCounselor);
-        const myBook = booked[pCounselor];
-        if (myBook) div.classList.add("booked");
-        else if (isAvail) { div.classList.add("parent-avail"); clickable = true; div.onclick = () => bookDay(d); }
-
+        else if (isAvail) { div.classList.add("parent-avail"); clickable = true; div.onclick = () => bookDate(d); }
+        const num = document.createElement("div"); num.className="day-num"; num.textContent=d; div.appendChild(num);
+        if (myBook) { const t = document.createElement("span"); t.className="tag blue"; t.textContent=myBook; div.appendChild(t); }
       } else {
         if (Object.keys(booked).length > 0) div.classList.add("booked-view");
         else if (avail.length > 0) div.classList.add("avail-view");
+        const num = document.createElement("div"); num.className="day-num"; num.textContent=d; div.appendChild(num);
+        Object.values(booked).forEach(n => { const t = document.createElement("span"); t.className="tag blue"; t.textContent=n; div.appendChild(t); });
+        const ub = avail.filter(c=>!booked[c]);
+        if (ub.length) { const t = document.createElement("span"); t.className="tag green"; t.textContent=`${ub.length} disp.`; div.appendChild(t); }
       }
 
-      if (clickable) div.classList.add("clickable");
-
-      const num = document.createElement("div");
-      num.className = "day-num"; num.textContent = d; div.appendChild(num);
-
-      if (mode === "view") {
-        Object.entries(booked).forEach(([c, n]) => {
-          const t = document.createElement("span"); t.className = "tag blue"; t.textContent = `${n} c/ ${c}`; div.appendChild(t);
-          const btn = document.createElement("button"); btn.className = "btn-red"; btn.textContent = "❌ Cancelar";
-          btn.onclick = e => { e.stopPropagation(); cancelBooking(k, c); }; div.appendChild(btn);
-        });
-        const unbooked = avail.filter(c => !booked[c]);
-        if (unbooked.length) {
-          const t = document.createElement("span"); t.className = "tag green"; t.textContent = `${unbooked.length} disponível${unbooked.length > 1 ? "is" : ""}`; div.appendChild(t);
-          unbooked.forEach(c => {
-            const btn = document.createElement("button"); btn.className = "btn-red"; btn.textContent = `🚫 ${c}`;
-            btn.onclick = e => { e.stopPropagation(); removeAvail(k, c); }; div.appendChild(btn);
-          });
-        }
-      } else if (mode === "counselor" && cStep === 3) {
-        const myBook = booked[cName];
-        if (myBook) {
-          const t = document.createElement("span"); t.className = "tag blue"; t.textContent = myBook; div.appendChild(t);
-          const btn = document.createElement("button"); btn.className = "btn-red"; btn.textContent = "❌ Cancelar";
-          btn.onclick = e => { e.stopPropagation(); cancelBooking(k, cName); }; div.appendChild(btn);
-        } else if (avail.includes(cName)) {
-          const t = document.createElement("span"); t.className = "tag green"; t.textContent = "Disponível"; div.appendChild(t);
-        }
-      } else if (mode === "parent" && pStep === 3) {
-        const myBook = booked[pCounselor];
-        if (myBook) {
-          const t = document.createElement("span"); t.className = "tag blue"; t.textContent = myBook; div.appendChild(t);
-          const btn = document.createElement("button"); btn.className = "btn-red"; btn.textContent = "❌ Cancelar";
-          btn.onclick = e => { e.stopPropagation(); cancelBooking(k, pCounselor); }; div.appendChild(btn);
-        } else if (avail.includes(pCounselor)) {
-          const t = document.createElement("span"); t.className = "tag green"; t.textContent = "Disponível"; div.appendChild(t);
-        }
-      }
-
-      grid.appendChild(div);
+    } else {
+      if (Object.keys(booked).length > 0) div.classList.add("booked-view");
+      else if (avail.length > 0) div.classList.add("avail-view");
+      const num = document.createElement("div"); num.className="day-num"; num.textContent=d; div.appendChild(num);
+      Object.values(booked).forEach(n => { const t = document.createElement("span"); t.className="tag blue"; t.textContent=n; div.appendChild(t); });
+      const ub = avail.filter(c=>!booked[c]);
+      if (ub.length) { const t = document.createElement("span"); t.className="tag green"; t.textContent=`${ub.length} disp.`; div.appendChild(t); }
     }
+
+    if (clickable) div.classList.add("clickable");
+    if (mode !== "counselor") grid.appendChild(div);
+    else grid.appendChild(div);
   }
 
-  function render() { renderFlowPanel(); renderCalendar(); }
-
-  // init month label
-  document.getElementById("month-label").textContent = MONTHS[month] + " 2026";
+  if (mode === "counselor" && counselorName) updateCounselorSummary();
+  if (mode === "parent") populateCounselorSelect();
+}
 </script>
 </body>
 </html>
